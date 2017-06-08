@@ -1,0 +1,115 @@
+@CHARSET "ISO-8859-1";
+
+body{
+	background-color: powderblue;
+}
+
+div.corpo{
+	width:100%;
+	text-color:red;
+	
+}
+
+header, footer {
+	padding: 1em;
+	color: black;
+	background-color:powderblue;
+	clear:left;
+	text-align: center;
+}
+
+div.menu{
+	
+	float: left;
+	max-width: 160px;
+	margin: 0;
+	padding: 1em;
+}
+
+.menu ul{
+	list-style-type: none;
+	padding: 0;
+
+}
+.menu{
+	display: inline;
+}
+.login{
+	display: inline;
+}
+.linkMenu :link, .linkMenu:visited, .linkMenu:active{
+	text-decoration: none;
+}
+
+.linkOrdenado{
+	list-style-type: none;
+}
+
+.linkMenu:hover{
+	text-decoration: underline;
+	font-size:105%;
+}
+
+.tabela_livros{
+	text-align:center;
+	border: 1px solid black;
+	font-size: 12pt;
+	width: 400px;
+	height: 30px;
+}
+
+
+#titulosPaginas{
+	font-size: 20;
+	font-family: fantasy;
+	font-style: bold;
+}
+
+h1{
+	font-size:400%;
+	text-align:center;
+}
+
+.sub{
+	text-align: center;
+}
+
+.article{
+	margin-left: 170px;
+	border-left: 1px solid gray;
+	padding: 1em;
+	overflow: hidden;
+}
+
+
+.hora{
+	text-align: right;
+}
+
+.linksteste{
+	margin-left: 170px;
+	border-left: 1px solid gray;
+	padding: 1em;
+	overflow: hidden;
+}
+
+#content{
+	height: 500px;
+	display: flex; 
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.item{
+	height: 450px;
+	width: 350px;
+	color: black;
+	-webkit-box-shadow: 0px 2px 8px -1px rgba(0,0,0,0.24);
+	background: white;
+	margin: 5px;
+	text-align: center;
+}
+.pesquisar{
+	display:inline;
+}
