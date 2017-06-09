@@ -44,7 +44,9 @@
 				"</form>"+"<form class='menu' action='locacoes.jsp' method='POST'>"+
 			"<input type='submit' value='locações' />"+"</form>"+
 				"<form class='login' action='sair.jsp' method='POST'>"+
-			"<input type='submit' value='sair'/>");
+			"<input type='submit' value='sair'/>"+"</form>"+
+			"<form class='login' action='cadastrar_livro.jsp' method='POST'>"+
+			"<input type='submit' value='Cadastrar Livro'/>"+"</form>");
 			}else{
 				out.print("<form class='login' action='login.jsp' method='POST'>"+
 			"<input type='submit' value='login' />"+"</form>");
@@ -57,7 +59,7 @@
 	</header>
 
 <div class="corpo">
-		<p align="center">
+	<p align="center">
 		
 		<form action="logado.jsp" method="POST">
 			<table align="center" border="0">

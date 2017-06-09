@@ -10,17 +10,21 @@ import java.util.List;
 import br.com.biblioteca.banco.ConnectionFactory;
 import sistema.Livro;
 import sistema.Reserva;
-import sistema.Usuario;
 
-public class JDBCReservaDAO implements ReservaDAO{
+public class JDBCReservaDAO{
 	
 	Connection connection;
 	
 	public JDBCReservaDAO(){
-		connection = ConnectionFactory.getConnection();
+		try {
+			connection = ConnectionFactory.getConnection();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	@Override
+	
 	public void inserir(Reserva reserva) {
 		
 		try {
@@ -42,7 +46,7 @@ public class JDBCReservaDAO implements ReservaDAO{
 		
 	}
 
-	@Override
+	
 	public void remover(int id) {
 		try {
 			String SQL = "DELETE FROM TB_reserva WHERE id_reserva = ?";
@@ -58,20 +62,26 @@ public class JDBCReservaDAO implements ReservaDAO{
 		
 	}
 
-	@Override
-	public List<Reserva> listar() {
+	
+	public List<Reserva> listar(int ra) {
 		
 		List<Reserva> reservas = new ArrayList<Reserva>();
 		
 		try {
-			String SQL = "SELECT * FROM TB_reserva";
+			String SQL = "SELECT * FROM TB_reserva WHERE ra_usuario = ?";
 			PreparedStatement ps = connection.prepareStatement(SQL);
+			ps.setInt(1, ra);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()){
 				Reserva reserva = new Reserva(rs.getInt("id_livro"),rs.getInt("ra_usuario"));
 				reserva.setId(rs.getInt("id_reserva"));
 				reserva.setData_reserva(rs.getDate("data_reserva"));
+				
+				JDBCLivroDAO buscar_nome_livro = new JDBCLivroDAO();
+				Livro livro = buscar_nome_livro.buscar_id(rs.getInt("id_livro"));
+				
+				reserva.setNome_livro(livro.getNome());
 				reservas.add(reserva);
 				
 			}
@@ -85,7 +95,7 @@ public class JDBCReservaDAO implements ReservaDAO{
 		}
 	}
 
-	@Override
+	
 	public Reserva buscar(int id) {
 		try {
 			
@@ -107,7 +117,7 @@ public class JDBCReservaDAO implements ReservaDAO{
 		}
 	}
 
-	@Override
+	
 	public void editar(Reserva reserva) {
 		try {
 			String SQL = "UPDATE TB_reserva SET id_livro=?,ra_usuario=?,data_reserva=? WHERE id_reserva =?";

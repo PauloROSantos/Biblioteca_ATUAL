@@ -8,10 +8,11 @@ public class ConnectionFactory {
 	
 	String status="";
 	
-	public static Connection getConnection(){
+	public static Connection getConnection() throws ClassNotFoundException{
 		
 		
 		try {
+			Class.forName("com.mysql.jdbc.Driver");
 			return DriverManager.getConnection("jdbc:mysql://localhost/biblioteca", "root", "");
 		} catch (SQLException e) {
 			e.printStackTrace();

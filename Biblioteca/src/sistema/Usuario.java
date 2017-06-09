@@ -69,12 +69,8 @@ public class Usuario {
 	
 	//--------------------- Construtor ------------------//
 	
-	public Usuario( int ra, String nome, String senha,int nivel) {
-		super();
-		this.nivel = nivel;
-		this.nome = nome;
-		this.ra = ra;
-		this.senha = senha;
+	public Usuario() {
+		
 	}
 	
 

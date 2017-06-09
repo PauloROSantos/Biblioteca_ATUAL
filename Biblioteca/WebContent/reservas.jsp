@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="sistema.*,java.util.List" %>
+<%@ page import="br.com.biblioteca.dao.*" %>
+<%@ page import="br.com.biblioteca.banco.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -41,7 +44,9 @@
 				"</form>"+"<form class='menu' action='locacoes.jsp' method='POST'>"+
 			"<input type='submit' value='locações' />"+"</form>"+
 				"<form class='login' action='sair.jsp' method='POST'>"+
-			"<input type='submit' value='sair'/>");
+			"<input type='submit' value='sair'/>"+"</form>"+
+			"<form class='login' action='cadastrar_livro.jsp' method='POST'>"+
+			"<input type='submit' value='Cadastrar Livro'/>"+"</form>");
 			}else{
 				out.print("<form class='login' action='login.jsp' method='POST'>"+
 			"<input type='submit' value='login' />"+"</form>");
@@ -54,8 +59,30 @@
 	</header>
 
 <div class="corpo">
-		<p align="center">Reservas do usuario logado, esse link só deve aparecer se o usuario estiver logado</p>
-		
+	<table class="tabela_livros" align="center">
+			<tr class="tabela_livros">
+				<td class="tabela_livros"><b>Livro</b></td>
+				<td class="tabela_livros"><b>Data</b></td>
+				<td class="tabela_livros"><b>Status</b></td>
+			</tr>
+			<% JDBCReservaDAO loc = new JDBCReservaDAO();
+				Integer id = (Integer)session.getAttribute("ra"); %><%
+				String teste = id.toString();
+				int teste2 = Integer.parseInt(teste);
+				List<Reserva> reservas = loc.listar(id);
+				
+				out.print(session.getAttribute("ra"));
+				
+			
+				for(Reserva reserva : reservas){ %>
+				<tr class="tabela_livros">
+					<td class="tabela_livros"><%= reserva.getNome_livro() %></td>
+					<td class="tabela_livros"><%= reserva.getData_reserva() %></td>
+					<td class="tabela_livros"> Reservado </td>
+				
+				</tr>
+				<%} %>
+	</table>
 		<hr />
 		
 		<p align="center"><a href="https://sga.impacta.com.br/sophia_web/" >Pagina de referencia</a></p>

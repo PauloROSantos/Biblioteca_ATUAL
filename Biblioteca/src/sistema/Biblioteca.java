@@ -1,8 +1,18 @@
 package sistema;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
 
 public class Biblioteca {
 	
@@ -17,6 +27,7 @@ public class Biblioteca {
 	
 	//--------------------- Metodos ------------------//
 	
+	/*
 	public boolean cadastrar_livro(String autor, String nome, String tema,int qtde){
 		Livro novo_livro = new Livro(autor,nome,tema, qtde);
 		livros.add(novo_livro);
@@ -63,11 +74,22 @@ public class Biblioteca {
 		
 	}
 	
+	public static List<Livro> listar_livro() throws SQLException {
+			
+		LivroDAO ld = DAOFactory.createLivroDAO();
+		List<Livro> livros = ld.listar();
+		
+		return livros;
+		
+	}
+	
+	*/
+	
 	//--------------------- Main ---------------------//
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ServletException, IOException, SQLException {
 		
-		
+		//System.out.println(listar_livro());
 
 	}
 

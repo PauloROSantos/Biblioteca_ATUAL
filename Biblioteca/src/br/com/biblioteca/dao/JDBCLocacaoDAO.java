@@ -12,16 +12,21 @@ import sistema.Livro;
 import sistema.Locacao;
 import sistema.Reserva;
 
-public class JDBCLocacaoDAO implements LocacaoDAO {
+public class JDBCLocacaoDAO  {
 	
 	Connection connection;
 	
 	public JDBCLocacaoDAO(){
-		connection = ConnectionFactory.getConnection();
+		try {
+			connection = ConnectionFactory.getConnection();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	@Override
-	public void inserir(Locacao locacao) {
+	
+	public boolean inserir(Locacao locacao) {
 		try {
 			String SQL = "INSERT INTO TB_locacao (id_livro,ra_usuario,data_emprestimo,data_devolucao,status) VALUES (?,?,?,?,?)";
 			
@@ -35,14 +40,16 @@ public class JDBCLocacaoDAO implements LocacaoDAO {
 				
 				ps.executeUpdate();
 				ps.close();
+				return true;
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
+				return false;
 			}
 		
 	}
 
-	@Override
+	
 	public void remover(int id) {
 		try {
 			String SQL = "DELETE FROM TB_locacao WHERE id_locacao = ?";
@@ -58,21 +65,29 @@ public class JDBCLocacaoDAO implements LocacaoDAO {
 		
 	}
 
-	@Override
-	public List<Locacao> listar() {
+	
+	public List<Locacao> listar(int ra) {
 		
 		List<Locacao> locacoes = new ArrayList<Locacao>();
 		
 		try {
-			String SQL = "SELECT * FROM TB_locacao";
+			String SQL = "SELECT * FROM TB_locacao WHERE ra_usuario = ?";
 			PreparedStatement ps = connection.prepareStatement(SQL);
+			ps.setInt(1, ra);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()){
-				Locacao locacao = new Locacao(rs.getInt("ra_usuario"),rs.getInt("id_livro"));
+				Locacao locacao = new Locacao();
+				locacao.setRa_usuario(rs.getInt("ra_usuario"));
+				locacao.setId_livro(rs.getInt("id_livro"));
 				locacao.setId(rs.getInt("id_locacao"));
 				locacao.setData_emprestimo(rs.getDate("data_emprestimo"));
 				locacao.setStatus(rs.getString("status"));
+				
+				JDBCLivroDAO buscar_nome_livro = new JDBCLivroDAO();
+				Livro livro = buscar_nome_livro.buscar_id(rs.getInt("id_livro"));
+				
+				locacao.setNome_livro(livro.getNome());
 				locacoes.add(locacao);
 				
 			}
@@ -86,7 +101,7 @@ public class JDBCLocacaoDAO implements LocacaoDAO {
 		}
 	}
 
-	@Override
+	
 	public Locacao buscar(int id) {
 		try {
 			
@@ -95,7 +110,9 @@ public class JDBCLocacaoDAO implements LocacaoDAO {
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			Locacao locacao = new Locacao(rs.getInt("ra_usuario"),rs.getInt("id_livro"));
+			Locacao locacao = new Locacao();
+			locacao.setRa_usuario(rs.getInt("ra_usuario"));
+			locacao.setId_livro(rs.getInt("id_livro"));
 			locacao.setId(rs.getInt("id_locacao"));
 			locacao.setData_emprestimo(rs.getDate("data_emprestimo"));
 			locacao.setStatus(rs.getString("status"));
@@ -109,7 +126,7 @@ public class JDBCLocacaoDAO implements LocacaoDAO {
 		}
 	}
 
-	@Override
+	
 	public void editar(Locacao locacao) {
 		try {
 			String SQL = "UPDATE TB_locacao SET id_livro=?,ra_usuario=?,data_reserva=? WHERE id_locacao =?";

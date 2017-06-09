@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="sistema.*,java.util.List" %>
+<%@ page import="br.com.biblioteca.dao.*" %>
+<%@ page import="br.com.biblioteca.banco.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
@@ -44,11 +47,12 @@
 				"</form>"+"<form class='menu' action='locacoes.jsp' method='POST'>"+
 			"<input type='submit' value='locações' />"+"</form>"+
 				"<form class='login' action='sair.jsp' method='POST'>"+
-			"<input type='submit' value='sair'/>");
+			"<input type='submit' value='sair'/>"+"</form>"+
+			"<form class='login' action='cadastrar_livro.jsp' method='POST'>"+
+						"<input type='submit' value='Cadastrar Livro'/>"+"</form>");
 			}else{
 				out.print("<form class='login' action='login.jsp' method='POST'>"+
-			"<input type='submit' value='login' />"+"</form>");
-						
+						"<input type='submit' value='login' />"+"</form>");
 			}
 		
 		%>

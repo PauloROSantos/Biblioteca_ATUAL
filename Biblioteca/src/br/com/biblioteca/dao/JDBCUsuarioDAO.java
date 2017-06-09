@@ -10,15 +10,20 @@ import java.util.List;
 import br.com.biblioteca.banco.ConnectionFactory;
 import sistema.Usuario;
 
-public class JDBCUsuarioDAO implements UsuarioDAO {
+public class JDBCUsuarioDAO {
 	
 	Connection connection;
 	
 	public JDBCUsuarioDAO(){
-		connection = ConnectionFactory.getConnection();
+		try {
+			connection = ConnectionFactory.getConnection();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	@Override
+	
 	public void inserir(Usuario usuario) {
 		
 		try {
@@ -40,7 +45,7 @@ public class JDBCUsuarioDAO implements UsuarioDAO {
 		
 	}
 
-	@Override
+	
 	public void remover(int id) {
 		
 		try {
@@ -57,7 +62,7 @@ public class JDBCUsuarioDAO implements UsuarioDAO {
 		
 	}
 
-	@Override
+	
 	public List<Usuario> listar() {
 		
 		List<Usuario> usuarios = new ArrayList<Usuario>();
@@ -68,7 +73,11 @@ public class JDBCUsuarioDAO implements UsuarioDAO {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()){
-				Usuario usuario = new Usuario(rs.getInt("ra_usuario"),rs.getString("nome"),rs.getString("senha"),rs.getInt("nivel"));
+				Usuario usuario = new Usuario();
+				usuario.setRa(rs.getInt("ra_usuario"));
+				usuario.setNome(rs.getString("nome"));
+				usuario.setSenha(rs.getString("senha"));
+				usuario.setNivel(rs.getInt("nivel"));
 				usuarios.add(usuario);
 				
 			}
@@ -82,16 +91,20 @@ public class JDBCUsuarioDAO implements UsuarioDAO {
 		}
 	}
 
-	@Override
-	public Usuario buscar(int id) {
+	
+	public Usuario buscar(int ra) {
 		try {
 			
 			String SQL = "SELECT * FROM TB_usuario WHERE ra_usuario = ?";
 			PreparedStatement ps = connection.prepareStatement(SQL);
-			ps.setInt(1, id);
+			ps.setInt(1, ra);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			Usuario usuario = new Usuario(rs.getInt("ra_usuario"),rs.getString("nome"),rs.getString("senha"),rs.getInt("nivel"));
+			Usuario usuario = new Usuario();
+			usuario.setRa(rs.getInt("ra_usuario"));
+			usuario.setNome(rs.getString("nome"));
+			usuario.setSenha(rs.getString("senha"));
+			usuario.setNivel(rs.getInt("nivel"));
 			
 			
 			return usuario;
@@ -99,10 +112,11 @@ public class JDBCUsuarioDAO implements UsuarioDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new RuntimeException("Falha ao buscar usuario");
+			
 		}
 	}
 
-	@Override
+	
 	public void editar(Usuario usuario) {
 		try {
 			String SQL = "UPDATE TB_usuario SET nome=?,senha=?,nivel=? WHERE ra_usuario =?";

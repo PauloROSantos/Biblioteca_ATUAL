@@ -12,9 +12,18 @@ public class Locacao {
 	int ra_usuario;
 	Date data_emprestimo;
 	int id_livro;
+	String nome_livro;
 	
 	//--------------------- Get / set ------------------//
 	
+	public String getNome_livro() {
+		return nome_livro;
+	}
+
+	public void setNome_livro(String nome_livro) {
+		this.nome_livro = nome_livro;
+	}
+
 	public Date getData_devolucao() {
 		return data_devolucao;
 	}
@@ -66,12 +75,10 @@ public class Locacao {
 	
 	//--------------------- Construtor ------------------//
 	
-	public Locacao(int ra_usuario, int id_livro) {
+	public Locacao() {
 		super();
 		
 		this.status = "locado";
-		this.ra_usuario = ra_usuario;
-		this.id_livro = id_livro;
 		java.util.Date dataUtil = new java.util.Date();
 		Date date = new java.sql.Date(dataUtil.getTime());
 		this.data_emprestimo = date;

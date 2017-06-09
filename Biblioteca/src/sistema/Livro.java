@@ -11,6 +11,7 @@ public class Livro {
 	String nome;
 	int qtde_estoque;
 	String tema;
+	String status;
 	
 	//--------------------- Get / set ------------------//
 
@@ -49,12 +50,8 @@ public class Livro {
 	//--------------------- Construtor ------------------//
 
 	
-	public Livro(String nome, String autor, String tema, int qtde) {
-		super();
-		this.autor = autor;
-		this.nome = nome;
-		this.qtde_estoque = qtde;
-		this.tema = tema;
+	public Livro() {
+		
 	}
 	
 	
@@ -63,7 +60,7 @@ public class Livro {
 	
 	public boolean locar(Usuario usuario){
 		int ra_usuario = usuario.getRa();
-		Locacao nova_locacao = new Locacao(ra_usuario,id);
+		Locacao nova_locacao = new Locacao();
 		return true;
 	}
 	
@@ -71,6 +68,14 @@ public class Livro {
 		int ra_usuario = usuario.getRa();
 		Reserva nova_reserva = new Reserva(id,ra_usuario);
 		return true;
+	}
+	public String getStatus() {
+		if(qtde_estoque > 0){
+			status = "disponivel";
+		}else{
+			status = "Não disponivel";
+		}
+		return status;
 	}
 	
 

@@ -10,16 +10,21 @@ import java.util.List;
 import br.com.biblioteca.banco.ConnectionFactory;
 import sistema.Livro;
 
-public class JDBCLivroDAO implements LivroDAO {
+public class JDBCLivroDAO{
 	
 	Connection connection;
 	
 	public JDBCLivroDAO(){
-		connection = ConnectionFactory.getConnection();
+		try {
+			connection = ConnectionFactory.getConnection();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	@Override
-	public void inserir(Livro livro) {
+	
+	public boolean inserir(Livro livro) {
 		
 		try {
 		String SQL = "INSERT INTO TB_livro (nome,autor,tema,qtde_estoque) VALUES (?,?,?,?)";
@@ -34,13 +39,16 @@ public class JDBCLivroDAO implements LivroDAO {
 			ps.executeUpdate();
 			ps.close();
 			
+			return true;
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 		
 	}
 
-	@Override
+	
 	public void remover(int id) {
 		
 		try {
@@ -57,7 +65,7 @@ public class JDBCLivroDAO implements LivroDAO {
 		
 	}
 
-	@Override
+	
 	public List<Livro> listar() {
 		
 		List<Livro> livros = new ArrayList<Livro>();
@@ -68,25 +76,58 @@ public class JDBCLivroDAO implements LivroDAO {
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()){
-				Livro livro = new Livro(rs.getString("nome"),rs.getString("autor"),rs.getString("tema"),rs.getInt("qtde_estoque"));
+				Livro livro = new Livro();
+				livro.setNome(rs.getString("nome"));
+				livro.setId(rs.getInt("id_livro"));
+				livro.setAutor(rs.getString("autor"));
+				livro.setTema(rs.getString("tema"));
+				livro.setQtde_estoque(rs.getInt("qtde_estoque"));
 				livros.add(livro);
 				
 			}
 			ps.close();
 			rs.close();
-			return livros;
+			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new RuntimeException("Falha ao listar livros");
 		}
+		return livros;
 		
 	}
 
-	@Override
-	public Livro buscar(int id) {
+	
+	public Livro buscar(String nome) {
+		Livro livro_teste = new Livro();
+		try {
+			
+			String SQL = "SELECT * FROM TB_livro WHERE nome = ?";
+			PreparedStatement ps = connection.prepareStatement(SQL);
+			ps.setString(1, nome);
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			Livro livro = new Livro();
+			livro.setNome(rs.getString("nome"));
+			livro.setId(rs.getInt("id_livro"));
+			livro.setAutor(rs.getString("autor"));
+			livro.setTema(rs.getString("tema"));
+			livro.setQtde_estoque(rs.getInt("qtde_estoque"));
+			
+			return livro;
+		} catch (SQLException e) {
+			/*
+			e.printStackTrace();
+			throw new RuntimeException("Falha ao buscar livro");
+			*/
+			return livro_teste;
+		}
 		
+		
+	}
+	public Livro buscar_id(int id) {
+		Livro livro_teste = new Livro();
 		try {
 			
 			String SQL = "SELECT * FROM TB_livro WHERE id_livro = ?";
@@ -94,20 +135,26 @@ public class JDBCLivroDAO implements LivroDAO {
 			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
-			Livro livro = new Livro(rs.getString("nome"),rs.getString("autor"),rs.getString("tema"),rs.getInt("qtde_estoque"));
+			Livro livro = new Livro();
+			livro.setNome(rs.getString("nome"));
 			livro.setId(rs.getInt("id_livro"));
+			livro.setAutor(rs.getString("autor"));
+			livro.setTema(rs.getString("tema"));
+			livro.setQtde_estoque(rs.getInt("qtde_estoque"));
 			
 			return livro;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			/*
 			e.printStackTrace();
 			throw new RuntimeException("Falha ao buscar livro");
+			*/
+			return livro_teste;
 		}
 		
 		
 	}
 
-	@Override
+	
 	public void editar(Livro livro) {
 		
 		try {

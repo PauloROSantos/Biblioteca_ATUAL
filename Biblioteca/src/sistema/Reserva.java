@@ -12,9 +12,19 @@ public class Reserva {
 	int id;
 	int id_livro;
 	int ra_usuario;
+	String nome_livro;
 	
 	//--------------------- Get / set ------------------//
 	
+	public String getNome_livro() {
+		return nome_livro;
+	}
+	public void setNome_livro(String nome_livro) {
+		this.nome_livro = nome_livro;
+	}
+	public void setId_livro(int id_livro) {
+		this.id_livro = id_livro;
+	}
 	public Date getData_reserva() {
 		return data_reserva;
 	}
